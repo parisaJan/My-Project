@@ -1,0 +1,222 @@
+import torch
+import torch.nn as nn
+​
+# Define a simple neural network class
+class DynamicNet(nn.Module):
+    def __init__(self):
+        super(DynamicNet, self).__init__()
+        self.fc1 = nn.Linear(10, 5)
+        self.fc2 = nn.Linear(5, 1)
+​
+    def forward(self, x):
+        x = self.fc1(x)
+        x = torch.relu(x)
+        y = self.fc2(x)
+        return y
+​
+# Create an instance of the dynamic neural network
+model = DynamicNet()
+​
+# Input tensor with requires_grad=True
+input_data = torch.randn(1, 10, requires_grad=True)
+​
+# Forward pass through the dynamic neural network
+output = model(input_data)
+​
+# Print the output
+print("Output:", output)
+​
+# Compute gradients
+output.backward()
+​
+# Access the gradients of model parameters
+print("Gradient of fc1 weights:", model.fc1.weight.grad)
+print("Gradient of fc1 bias:", model.fc1.bias.grad)
+print("Gradient of fc2 weights:", model.fc2.weight.grad)
+print("Gradient of fc2 bias:", model.fc2.bias.grad)
+Output: tensor([[0.5685]], grad_fn=<AddmmBackward0>)
+Gradient of fc1 weights: tensor([[-0.3132, -0.0201, -0.0752,  0.0928, -0.0582, -0.1791, -0.1326, -0.1185,
+          0.0612,  0.0370],
+        [ 1.0082,  0.0648,  0.2420, -0.2988,  0.1875,  0.5766,  0.4270,  0.3815,
+         -0.1971, -0.1191],
+        [ 0.0000,  0.0000,  0.0000, -0.0000,  0.0000,  0.0000,  0.0000,  0.0000,
+         -0.0000, -0.0000],
+        [ 0.0000,  0.0000,  0.0000, -0.0000,  0.0000,  0.0000,  0.0000,  0.0000,
+         -0.0000, -0.0000],
+        [ 1.2356,  0.0794,  0.2965, -0.3662,  0.2298,  0.7067,  0.5233,  0.4675,
+         -0.2416, -0.1460]])
+Gradient of fc1 bias: tensor([-0.1081,  0.3481,  0.0000,  0.0000,  0.4266])
+Gradient of fc2 weights: tensor([[0.4514, 0.0507, 0.0000, 0.0000, 0.9860]])
+Gradient of fc2 bias: tensor([1.])
+
+
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+​
+# Define a simple neural network
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
+        self.fc = nn.Linear(10, 1)
+​
+    def forward(self, x):
+        return self.fc(x)
+​
+# Instantiate the model, loss function, and optimizer
+model = SimpleNet()
+criterion = nn.MSELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+​
+# Sample input and target data
+inputs = torch.randn(100, 10)
+targets = torch.randn(100, 1)
+​
+# Training loop
+for epoch in range(100):
+    # Forward pass
+    outputs = model(inputs)
+    loss = criterion(outputs, targets)
+​
+    # Backward pass and optimization
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+​
+    print(f'Epoch {epoch+1}/{100}, Loss: {loss.item()}')
+Epoch 1/100, Loss: 1.4457178115844727
+Epoch 2/100, Loss: 1.4189727306365967
+Epoch 3/100, Loss: 1.3934707641601562
+Epoch 4/100, Loss: 1.3691513538360596
+Epoch 5/100, Loss: 1.3459571599960327
+Epoch 6/100, Loss: 1.3238341808319092
+Epoch 7/100, Loss: 1.302730917930603
+Epoch 8/100, Loss: 1.2825980186462402
+Epoch 9/100, Loss: 1.2633888721466064
+Epoch 10/100, Loss: 1.2450590133666992
+Epoch 11/100, Loss: 1.2275664806365967
+Epoch 12/100, Loss: 1.2108711004257202
+Epoch 13/100, Loss: 1.1949348449707031
+Epoch 14/100, Loss: 1.1797213554382324
+Epoch 15/100, Loss: 1.165196418762207
+Epoch 16/100, Loss: 1.1513268947601318
+Epoch 17/100, Loss: 1.1380820274353027
+Epoch 18/100, Loss: 1.1254318952560425
+Epoch 19/100, Loss: 1.113348364830017
+Epoch 20/100, Loss: 1.1018049716949463
+Epoch 21/100, Loss: 1.090775728225708
+Epoch 22/100, Loss: 1.080236792564392
+Epoch 23/100, Loss: 1.0701651573181152
+Epoch 24/100, Loss: 1.0605385303497314
+Epoch 25/100, Loss: 1.0513361692428589
+Epoch 26/100, Loss: 1.0425384044647217
+Epoch 27/100, Loss: 1.0341261625289917
+Epoch 28/100, Loss: 1.0260814428329468
+Epoch 29/100, Loss: 1.0183873176574707
+Epoch 30/100, Loss: 1.0110273361206055
+Epoch 31/100, Loss: 1.0039862394332886
+Epoch 32/100, Loss: 0.9972492456436157
+Epoch 33/100, Loss: 0.9908020496368408
+Epoch 34/100, Loss: 0.984631359577179
+Epoch 35/100, Loss: 0.9787248373031616
+Epoch 36/100, Loss: 0.9730699062347412
+Epoch 37/100, Loss: 0.9676552414894104
+Epoch 38/100, Loss: 0.9624699354171753
+Epoch 39/100, Loss: 0.9575034379959106
+Epoch 40/100, Loss: 0.952745795249939
+Epoch 41/100, Loss: 0.9481877088546753
+Epoch 42/100, Loss: 0.9438198804855347
+Epoch 43/100, Loss: 0.9396339654922485
+Epoch 44/100, Loss: 0.9356215000152588
+Epoch 45/100, Loss: 0.931774914264679
+Epoch 46/100, Loss: 0.9280866980552673
+Epoch 47/100, Loss: 0.9245498180389404
+Epoch 48/100, Loss: 0.9211574792861938
+Epoch 49/100, Loss: 0.9179031848907471
+Epoch 50/100, Loss: 0.914780855178833
+Epoch 51/100, Loss: 0.911784827709198
+Epoch 52/100, Loss: 0.9089093208312988
+Epoch 53/100, Loss: 0.9061489701271057
+Epoch 54/100, Loss: 0.9034988284111023
+Epoch 55/100, Loss: 0.9009543061256409
+Epoch 56/100, Loss: 0.8985102772712708
+Epoch 57/100, Loss: 0.8961628675460815
+Epoch 58/100, Loss: 0.8939076066017151
+Epoch 59/100, Loss: 0.8917405605316162
+Epoch 60/100, Loss: 0.8896580338478088
+Epoch 61/100, Loss: 0.8876560926437378
+Epoch 62/100, Loss: 0.8857317566871643
+Epoch 63/100, Loss: 0.8838812112808228
+Epoch 64/100, Loss: 0.8821017742156982
+Epoch 65/100, Loss: 0.880389928817749
+Epoch 66/100, Loss: 0.8787432312965393
+Epoch 67/100, Loss: 0.8771588206291199
+Epoch 68/100, Loss: 0.875633955001831
+Epoch 69/100, Loss: 0.8741662502288818
+Epoch 70/100, Loss: 0.8727532029151917
+Epoch 71/100, Loss: 0.8713926672935486
+Epoch 72/100, Loss: 0.8700825572013855
+Epoch 73/100, Loss: 0.8688204884529114
+Epoch 74/100, Loss: 0.8676048517227173
+Epoch 75/100, Loss: 0.8664333820343018
+Epoch 76/100, Loss: 0.8653045892715454
+Epoch 77/100, Loss: 0.8642164468765259
+Epoch 78/100, Loss: 0.863167405128479
+Epoch 79/100, Loss: 0.8621559143066406
+Epoch 80/100, Loss: 0.8611805438995361
+Epoch 81/100, Loss: 0.8602397441864014
+Epoch 82/100, Loss: 0.8593321442604065
+Epoch 83/100, Loss: 0.8584564924240112
+Epoch 84/100, Loss: 0.8576114177703857
+Epoch 85/100, Loss: 0.8567956686019897
+Epoch 86/100, Loss: 0.8560082912445068
+Epoch 87/100, Loss: 0.855247974395752
+Epoch 88/100, Loss: 0.8545138835906982
+Epoch 89/100, Loss: 0.8538047075271606
+Epoch 90/100, Loss: 0.8531196713447571
+Epoch 91/100, Loss: 0.8524577617645264
+Epoch 92/100, Loss: 0.8518182635307312
+Epoch 93/100, Loss: 0.8512001633644104
+Epoch 94/100, Loss: 0.8506026268005371
+Epoch 95/100, Loss: 0.8500249981880188
+Epoch 96/100, Loss: 0.8494665026664734
+Epoch 97/100, Loss: 0.8489262461662292
+Epoch 98/100, Loss: 0.8484036922454834
+Epoch 99/100, Loss: 0.8478982448577881
+Epoch 100/100, Loss: 0.8474091291427612
+
+
+
+import torch
+
+# Define input tensors
+x = torch.tensor(2.0, requires_grad=True)
+y = torch.tensor(3.0, requires_grad=True)
+
+# Perform dynamic operations
+z = x + y
+w = z * 2
+
+# The dynamic computation graph is built as operations are executed
+
+# Print the intermediate values
+print("x:", x)
+print("y:", y)
+print("z:", z)
+print("w:", w)
+
+# Compute gradients
+w.backward()
+
+# Access the gradients
+print("Gradient of x:", x.grad)
+print("Gradient of y:", y.grad)
+
+
+x: tensor(2., requires_grad=True)
+y: tensor(3., requires_grad=True)
+z: tensor(5., grad_fn=<AddBackward0>)
+w: tensor(10., grad_fn=<MulBackward0>)
+Gradient of x: tensor(2.)
+Gradient of y: tensor(2.)
